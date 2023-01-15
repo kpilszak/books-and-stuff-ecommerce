@@ -22,6 +22,8 @@ export class ProductListComponent implements OnInit {
   }
 
   listProducts() {
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+
     this.productService.getProductList().subscribe(
       data => {
         this.products = data;
