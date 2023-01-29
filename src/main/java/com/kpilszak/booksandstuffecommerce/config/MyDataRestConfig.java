@@ -10,6 +10,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Configuration
 public class MyDataRestConfig implements RepositoryRestConfigurer {
@@ -34,5 +38,19 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
                 .forDomainType(ProductCategory.class)
                 .withItemExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
+
+        exposeIds(config);
+    }
+
+    private void exposeIds(RepositoryRestConfiguration config) {
+        Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
+        List<Class> entityClasses = new ArrayList<>();
+
+        for (EntityType entityType : entities) {
+            entityClasses.add(entityType.getJavaType());
+        }
+
+        Class[] domainTypes = entityClasses.toArray(new Class[0]);
+        config.exposeIdsFor(domainTypes);
     }
 }
