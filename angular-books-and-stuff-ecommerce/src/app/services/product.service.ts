@@ -11,6 +11,7 @@ import { ProductCategory } from '../common/product-category';
 export class ProductService {
 
   private baseUrl = 'http://localhost:8080/api/products';
+  private categoryUrl = 'http://localhost:8080/api/product-category';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -24,8 +25,10 @@ export class ProductService {
     )
   }
 
-  getProductCategories() {
-    throw new Error('Method not implemented.');
+  getProductCategories(): Observable<ProductCategory[]> {
+    return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
+      map(response => response._embedded.productCategory)
+    )
   }
 }
 
