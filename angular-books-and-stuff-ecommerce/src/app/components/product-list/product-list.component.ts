@@ -23,7 +23,10 @@ export class ProductListComponent implements OnInit {
   }
 
   listProducts() {
-      this.handleListProducts();
+
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    this.handleListProducts();
   }
 
   handleListProducts() {
