@@ -34,6 +34,10 @@ export class ProductListComponent implements OnInit {
 
   }
 
+  handleSearchProducts() {
+    const keyword: string = this.route.snapshot.paramMap.get('keyword');
+  }
+
   handleListProducts() {
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
