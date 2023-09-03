@@ -74,12 +74,6 @@ export class ProductListComponent implements OnInit {
     this.productService.getProductListPaginate(this.pageNumber - 1, this.pageSize, this.currentCategoryId).subscribe(this.processResult());
   }
 
-  updatePageSize(pageSize: string) {
-    this.pageSize = +pageSize;
-    this.pageNumber = 1;
-    this.listProducts();
-  }
-
   processResult() {
     return (data: any) => {
       this.products = data._embedded.products;
@@ -87,6 +81,16 @@ export class ProductListComponent implements OnInit {
       this.pageSize = data.page.size;
       this.totalElements = data.page.totalElements;
     }
+  }
+
+  updatePageSize(pageSize: string) {
+    this.pageSize = +pageSize;
+    this.pageNumber = 1;
+    this.listProducts();
+  }
+
+  addToCart(product: Product) {
+    console.log(`Addingto cart: ${product.name}, ${product.unitPrice}`);
   }
 
 }
