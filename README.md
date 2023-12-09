@@ -22,7 +22,8 @@ Project is created with:
 * Java 11  
 * Spring Boot 2.7.9
 * Spring Data JPA 
-* Maven  
+* Maven
+* Angular 14
   
 IDE: Intellij IDEA 2022.1  
 
