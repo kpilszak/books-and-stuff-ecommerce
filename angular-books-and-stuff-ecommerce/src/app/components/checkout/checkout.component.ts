@@ -17,6 +17,8 @@ export class CheckoutComponent implements OnInit {
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
 
+  countries: Country[] = [];
+
   constructor(private formBuilder: FormBuilder, private luv2ShopFormService: Luv2ShopFormService) { }
 
   ngOnInit(): void {
@@ -61,6 +63,12 @@ export class CheckoutComponent implements OnInit {
         this.creditCardYears = data;
       }
     )
+
+    this.luv2ShopFormService.getCountries().subscribe(
+      data => {
+        this.countries = data;
+      }
+    );
 
   }
 
