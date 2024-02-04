@@ -121,9 +121,13 @@ export class CheckoutComponent implements OnInit {
       data => {
         if (formGroupName === 'shippingAddress') {
           this.shippingAddressStates = data;
+        } else {
+          this.billingAddressStates = data;
         }
+
+        formGroup?.get('state')?.setValue(data[0]);
       }
-    )
+    );
   }
 
 }
