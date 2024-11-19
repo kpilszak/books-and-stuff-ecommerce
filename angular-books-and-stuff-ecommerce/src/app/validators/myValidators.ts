@@ -1,11 +1,11 @@
 import { FormControl, ValidationErrors } from "@angular/forms";
 
-export class Myvalidators {
-  static notOnlyWhitespace(control: FormControl) : ValidationErrors {
+export class MyValidators {
+  static notOnlyWhitespace(control: FormControl) : ValidationErrors | null {
     if ((control.value != null) && (control.value.trim().length === 0)) {
       return { 'notOnlyWhitespace': true };
     } else {
-      return { 'notOnlyWhitespace': false };
+      return null;
     }
   }
 }
