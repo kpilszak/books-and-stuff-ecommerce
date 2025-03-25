@@ -203,17 +203,39 @@ export class CheckoutComponent implements OnInit {
     purchase.order = order;
     purchase.orderItems = orderItems;
 
-    this.checkoutService.placeOrder(purchase).subscribe({
-        next: response => {
-          alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
+    this.paymentInfo.amount = this.totalPrice * 100;
+    this.paymentInfo.currency = "USD";
 
-          this.resetCart();
-        },
-        error: err => {
-          alert(`There was an error: ${err.message}`);
+    if (!this.checkoutFormGroup.invalid && this.displayError.textContent === "") {
+      this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
+        (paymentIntentResponse) => {
+          this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
+            {
+              payment_method: {
+                card: this.cardElement
+              }
+            }, { handleActions: false })
+            .then((result: any) => {
+              if (result.error) {
+                alert(`There was an error: ${result.error.message}`);
+              } else {
+                this.checkoutService.placeOrder(purchase).subscribe({
+                  next: (response: any) => {
+                    alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
+                    this.resetCart();
+                  },
+                  error: (err:any) => {
+                    alert(`There was an error: ${err.message}`);
+                  }
+                })
+              }
+            })
         }
-      }
-    );
+      );
+    } else {
+      this.checkoutFormGroup.markAllAsTouched();
+      return;
+    }
   }
 
   getStates(formGroupName: string) {
